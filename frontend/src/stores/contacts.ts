@@ -1,0 +1,39 @@
+// import { ref, computed } from 'vue'
+
+import type Contact from '../types/contact'
+import { defineStore } from 'pinia'
+
+interface State {
+    contacts: Contact[]
+}
+
+export const useCounterStore = defineStore('contacts', {
+    state: ():State => {
+        return {
+            contacts: []
+        }
+    },
+    actions: {
+        defineContacts(contacts: Contact[]) {
+            this.contacts = contacts;
+        },
+        addContact(contact: Contact) {
+            this.contacts.push(contact)
+        },
+        removeContact(contact: Contact) {
+            this.contacts = this.contacts.filter(c => c.id!== contact.id);
+        },
+    },
+    getters: {
+        getAllContacts: (state) => state.contacts,
+        getContactById: (state) => (id: number) => state.contacts.find(c => c.id === id),
+        findContact: (state) => (searchValue: string) => {
+            return state.contacts.find(c => {
+                c.name.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase()) ||
+                c.email?.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase()) ||
+                c.telephone?.includes(searchValue) ||
+                c.address?.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
+            })
+        }
+    }
+})
