@@ -7,15 +7,17 @@ import Toast from 'primevue/toast';
 import ConfirmDialog from 'primevue/confirmdialog';
 
 
-axios.get('contacts').then(res => {
-  switch(res.status){
-    case 200:
-      useContactsStore().defineContacts(res.data)
-      break;
-    default:
-      console.error('Error fetching contacts', res.status);
-  }
-});
+(async() => {
+  axios.get('contacts').then(res => {
+    switch(res.status){
+      case 200:
+        useContactsStore().defineContacts(res.data)
+        break;
+      default:
+        console.error('Error fetching contacts', res.status);
+    }
+  });
+})();
 </script>
 <template>
   <ConfirmDialog></ConfirmDialog>

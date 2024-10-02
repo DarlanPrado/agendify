@@ -16,7 +16,7 @@ const searchValue = ref('');
 const toast = useToast();
 const confirm = useConfirm();
 
-const onRowEditSave = (value: any) => {
+const onRowEditSave = async(value: any) => {
     if(value.data.id){
         axios.put(`contacts/${value.data.id}`, value.newData).then((res) => {
             switch(res.status){
@@ -80,7 +80,7 @@ const onRowEditSave = (value: any) => {
     }
 }
 
-const onRemoveItem = (value: any) => {
+const onRemoveItem = async(value: any) => {
     axios.delete(`contacts/${value.id}`).then((res) => {
         switch(res.status){
             case 200:
@@ -116,7 +116,7 @@ const onRemoveItem = (value: any) => {
     });
 }
 
-const onCreateContact = (value: any) => {
+const onCreateContact = async(value: any) => {
     axios.post("contacts", value).then((res) => {
         switch (res.status) {
             case 201:

@@ -23,6 +23,7 @@ Antes de iniciar, você precisa ter o seguinte instalado:
 
 - **Node.js** (para o frontend)
 - **Composer** (para o Laravel)
+- **Docker** (para gestão dos containers)
 - **PostgreSQL**
 
 ## Instalação
