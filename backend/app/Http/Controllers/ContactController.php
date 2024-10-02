@@ -18,14 +18,14 @@ class ContactController extends Controller
     public function create(Request $request) {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:contacts,email',
-            'address' => 'nullable|string',
-            'telephone' => 'nullable|string|unique:contacts,telephone|max:15',
+            'email' => 'sometimes|nullable|email|unique:contacts,email',
+            'address' => 'sometimes|nullable|string',
+            'telephone' => 'sometimes|nullable|string|unique:contacts,telephone|max:15',
         ]);
 
         $newContact = Contacts::create([
             'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
+            'email' => $validatedData['email'] ?? null,
             'address' => $validatedData['address'] ?? null,
             'telephone' => $validatedData['telephone'] ?? null,
         ]);
@@ -53,10 +53,10 @@ class ContactController extends Controller
         }
 
         $validatedData = $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'email' => 'sometimes|required|email|unique:contacts,email,' . $id,
-            'address' => 'nullable|string',
-            'telephone' => 'nullable|string|unique:contacts,telephone,' . $id . '|max:15',
+            'name' => 'required|string|max:255',
+            'email' => 'sometimes|nullable|email|unique:contacts,email,' . $id,
+            'address' => 'sometimes|nullable|string',
+            'telephone' => 'sometimes|nullable|string|unique:contacts,telephone,' . $id . '|max:15',
         ]);
 
         $contact->update([
