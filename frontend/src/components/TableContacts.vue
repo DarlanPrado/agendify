@@ -16,7 +16,7 @@ const data = defineModel<Contact[]>({required: true})
 </script>
 <template>
     <section>
-        <DataTable v-model:editingRows="editingRows" :value="data" tableStyle="min-width: 50rem" editMode="row" dataKey="id" @row-edit-save="e => $emit('editSave', e)">
+        <DataTable sortField="name" :sortOrder="1" v-model:editingRows="editingRows" :value="data" tableStyle="min-width: 50rem" editMode="row" dataKey="id" @row-edit-save="e => $emit('editSave', e)">
             <Column field="name" sortable header="Nome">
                 <template #editor="{ data, field }">
                     <InputText v-model="data[field]" required placeholder="Nome do contato"/>

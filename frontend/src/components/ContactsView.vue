@@ -9,10 +9,12 @@ import { ref, computed } from 'vue';
 import axios from 'axios';
 import TableContacts from './TableContacts.vue';
 import { useToast } from 'primevue/usetoast';
+import { useConfirm } from "primevue/useconfirm";
 
 const showModalCreateContact = ref(false);
 const searchValue = ref('');
 const toast = useToast();
+const confirm = useConfirm();
 
 const onRowEditSave = (value: any) => {
     if(value.data.id){
@@ -39,6 +41,24 @@ const onRowEditSave = (value: any) => {
             }
         }).catch((err) => {
             switch(err.status){
+                case 409:
+                    if(err.response?.data?.email_exists){
+                        toast.add({
+                            severity: 'warn',
+                            summary: 'Falha',
+                            detail: 'Já existe um contato com este email',
+                            life: 5000,                
+                        })
+                    }
+                    if(err.response?.data?.telephone_exists){
+                        toast.add({
+                            severity: 'warn',
+                            summary: 'Falha',
+                            detail: 'Já existe um contato com este telefone',
+                            life: 5000,                
+                        })
+                    }
+                    break;
                 case 422:
                     toast.add({
                         severity: 'warn',
@@ -120,6 +140,24 @@ const onCreateContact = (value: any) => {
         }
     }).catch((err) => {
         switch(err.status){
+            case 409:
+                if(err.response?.data?.email_exists){
+                    toast.add({
+                        severity: 'warn',
+                        summary: 'Falha',
+                        detail: 'Já existe um contato com este email',
+                        life: 5000,                
+                    })
+                }
+                if(err.response?.data?.telephone_exists){
+                    toast.add({
+                        severity: 'warn',
+                        summary: 'Falha',
+                        detail: 'Já existe um contato com este telefone',
+                        life: 5000,                
+                    })
+                }
+                break;
             case 422:
                 toast.add({
                     severity: 'warn',
@@ -152,12 +190,14 @@ const filteredRows = computed(() => {
     })
 })
 </script>
-
 <template>
     <section>
         <ModalCreateContact v-model="showModalCreateContact" @create-contact="onCreateContact" />
         <Card>
             <template #title>
+                <div>
+                    <h6 style="margin-bottom: 1rem; font-size: 2rem; font-weight: bold;">Contatos</h6>
+                </div>
                 <div>
                     <div style="display: flex; gap: 1rem;">
                         <div style="width: 100%">
@@ -170,9 +210,20 @@ const filteredRows = computed(() => {
                 </div>
             </template>
             <template #content>
-                <TableContacts v-model="filteredRows" @edit-save="onRowEditSave" @remove-item="onRemoveItem" />
+                <TableContacts v-if="filteredRows.length" v-model="filteredRows" @edit-save="onRowEditSave" @remove-item="data => {
+                    confirm.require({
+                        accept: () => onRemoveItem(data),
+                        header: 'Excluir contato',
+                        icon: 'pi pi-exclamation-circle',
+                        acceptLabel: 'Excluir',
+                        rejectLabel: 'Cancelar',
+                        message: 'Tem certeza que deseja excluir permanentemente este contato?',
+                    })
+                }" />
+                <div style="display: flex; justify-content: center; align-items: center; height: 10rem;" v-show="!filteredRows.length">
+                    <span style="font-weight: bold; font-size: 1rem;">Nenhum item encontrado</span>
+                </div>
             </template>
         </Card>
     </section>
-
 </template>
