@@ -6,6 +6,7 @@ import 'primeicons/primeicons.css'
 import PrimeVue from 'primevue/config';
 import Aura from '@primevue/themes/aura';
 import App from './App.vue'
+import './plugins/axios'
 
 const app = createApp(App)
 

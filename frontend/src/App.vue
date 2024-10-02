@@ -1,7 +1,19 @@
 <script setup lang="ts">
-// import HelloWorld from './components/HelloWorld.vue'
-// import TheWelcome from './components/TheWelcome.vue'
-import Button from 'primevue/button';
+import axios from 'axios';
+import ContactsView from './components/ContactsView.vue';
+import { useContactsStore } from './stores/contacts';
+
+axios.get('contacts').then(res => {
+  switch(res.status){
+    case 200:
+      useContactsStore().defineContacts(res.data)
+      console.log(res.data);
+      break;
+    default:
+      console.error('Error fetching contacts', res.status);
+  }
+});
+
 </script>
 
 <template>
@@ -14,13 +26,14 @@ import Button from 'primevue/button';
   </header> -->
 
   <main>
-    <p>teste</p>
-    <Button >testeButton</Button>
+    <ContactsView />
+    <!-- <p>teste</p> -->
+    <!-- <Button >testeButton</Button> -->
     <!-- <TheWelcome /> -->
   </main>
 </template>
 
-<style scoped>
+<!-- <style scoped>
 header {
   line-height: 1.5;
 }
@@ -47,4 +60,4 @@ header {
     flex-wrap: wrap;
   }
 }
-</style>
+</style> -->

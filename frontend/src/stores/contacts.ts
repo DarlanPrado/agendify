@@ -7,7 +7,7 @@ interface State {
     contacts: Contact[]
 }
 
-export const useCounterStore = defineStore('contacts', {
+export const useContactsStore = defineStore('contacts', {
     state: ():State => {
         return {
             contacts: []
@@ -19,6 +19,15 @@ export const useCounterStore = defineStore('contacts', {
         },
         addContact(contact: Contact) {
             this.contacts.push(contact)
+        },
+        updateContact(contact: Contact) {
+            const index = this.contacts.findIndex(c => c.id === contact.id);
+            if (index !== -1) {
+                this.contacts[index] = contact;
+                return contact;
+            }
+            
+            return null; 
         },
         removeContact(contact: Contact) {
             this.contacts = this.contacts.filter(c => c.id!== contact.id);
