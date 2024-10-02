@@ -6,7 +6,10 @@ import 'primeicons/primeicons.css'
 import PrimeVue from 'primevue/config';
 import Aura from '@primevue/themes/aura';
 import App from './App.vue'
+
 import './plugins/axios'
+
+import ToastService from 'primevue/toastservice';
 
 const app = createApp(App)
 
@@ -16,5 +19,6 @@ app.use(PrimeVue, {
         preset: Aura,
     }
 })
+app.use(ToastService)
 
 app.mount('#app')

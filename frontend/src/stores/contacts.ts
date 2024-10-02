@@ -29,8 +29,8 @@ export const useContactsStore = defineStore('contacts', {
             
             return null; 
         },
-        removeContact(contact: Contact) {
-            this.contacts = this.contacts.filter(c => c.id!== contact.id);
+        removeContact(contactID: Contact['id']) {
+            this.contacts = this.contacts.filter(c => c.id!== contactID);
         },
     },
     getters: {
